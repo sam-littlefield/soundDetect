@@ -3,3 +3,6 @@ pyaudio==0.2.11
 keyboard==0.13.3
 mouse==0.7.0
 matplotlib==3.1.0
+PyAutoGUI==0.9.44
+xlib==0.21
+numpy==1.16.4
