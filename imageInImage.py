@@ -16,10 +16,12 @@ time.sleep(2)
 def bobberfish():
     a=0
     b=0
+    #This box collects images and moves to find the bobber
     for i in range(1350, 1550, 100):
         a+=1
         for c in range(350, 650, 100):
             b+=1
+            #Grabs the whole screen to search for 'Fishing Bobber' Tooltip
             im=ImageGrab.grab(bbox=(0,0,2560,1440))
             im.save('./ImageInImage/assets/im'+str(a+b)+'.png')
             # Image we want to search
@@ -36,9 +38,10 @@ def bobberfish():
             threshold = 0.8
             loc = np.where( res >= threshold)
             
-            # Draw red box around the item we think matches
+            # Draw red box around the item we think matches and starts listening for fish sound
             for pt in zip(*loc[::-1]):
                 cv.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+                #Fish sound listen
                 FORMAT=pyaudio.paInt16
                 CHANNELS=2
                 RATE=random.randint(2000, 5000)
@@ -60,8 +63,10 @@ def bobberfish():
                     data=stream.read(CHUNK)
                     data_chunk=array('h',data)
                     vol=max(data_chunk)
+                    #Volume threshold for fish sound. Might need to play around with it. Make sure system audio is used, NOT  a microphone. Turn off ambient sound.
                     if(vol>=1500):
                         print("something said")
+                        #Autoloot
                         keyboard.press('shift')
                         mouse.click(button='right')
                         keyboard.release('shift')
@@ -73,10 +78,11 @@ def bobberfish():
 
             # Write image with red box to file
             cv.imwrite('./ImageInImage/assets/foundCog.png',img_rgb)
-            
+            #Moves if the bobber hasn't been found
             pyautogui.moveTo(i, c)
 
 while True:
+    #Set '1' key to cast fishing
     keyboard.press_and_release('1')
     bobberfish()
     time.sleep(5)
